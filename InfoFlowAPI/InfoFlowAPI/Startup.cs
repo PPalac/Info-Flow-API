@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace InfoFlowAPI
 {
@@ -20,6 +21,7 @@ namespace InfoFlowAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DbCtx>(opt => opt.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.AddSwaggerGen(opt => opt.SwaggerDoc("v1", new Info {Title = "Info Flow API", Version="1.0" }));
             services.AddMvc();
         }
 
@@ -31,7 +33,9 @@ namespace InfoFlowAPI
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc();
+            app.UseMvc()
+               .UseSwagger()
+               .UseSwaggerUI(opt => opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Info Flow API V1.0"));
         }
     }
 }
