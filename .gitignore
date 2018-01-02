@@ -313,3 +313,4 @@ OpenCover/
 
 # Azure Stream Analytics local run output 
 ASALocalRun/
+/InfoFlowAPI/InfoFlowAPI/Logs
