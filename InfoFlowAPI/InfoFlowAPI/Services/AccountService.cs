@@ -2,12 +2,12 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Threading.Tasks;
+using InfoFlowAPI.Data.Models;
 using InfoFlowAPI.Services.Interfaces;
 using InfoFlowAPI.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using InfoFlowAPI.Data.Models;
 
 namespace InfoFlowAPI.Services
 {

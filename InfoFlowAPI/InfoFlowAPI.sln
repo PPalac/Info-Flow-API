@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.27130.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfoFlowAPI", "InfoFlowAPI\InfoFlowAPI.csproj", "{1A3E461F-A9CD-487F-9420-36078BF7B0D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfoFlowAPI.Data", "InfoFlowAPI.Data\InfoFlowAPI.Data.csproj", "{C976FBF2-33ED-49F7-9B8C-A27E9370EEC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfoFlowAPI.Data", "InfoFlowAPI.Data\InfoFlowAPI.Data.csproj", "{C976FBF2-33ED-49F7-9B8C-A27E9370EEC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfoFlowAPI.Tests", "InfoFlowAPI.Tests\InfoFlowAPI.Tests.csproj", "{6AD75C44-9090-45F3-BADE-38F40CEBEA1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C976FBF2-33ED-49F7-9B8C-A27E9370EEC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C976FBF2-33ED-49F7-9B8C-A27E9370EEC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C976FBF2-33ED-49F7-9B8C-A27E9370EEC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AD75C44-9090-45F3-BADE-38F40CEBEA1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AD75C44-9090-45F3-BADE-38F40CEBEA1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AD75C44-9090-45F3-BADE-38F40CEBEA1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AD75C44-9090-45F3-BADE-38F40CEBEA1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
