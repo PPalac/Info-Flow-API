@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
-using InfoFlowAPI.Services.Interfaces;
-using InfoFlowAPI.ViewModels;
+using InfoFlow.API.Services.Interfaces;
+using InfoFlow.API.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
-namespace InfoFlowAPI.Controllers
+namespace InfoFlow.API.Controllers
 {
     [Route("api/[controller]")]
     public class AccountController : Controller

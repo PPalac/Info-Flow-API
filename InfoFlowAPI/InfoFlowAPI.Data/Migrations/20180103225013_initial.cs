@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
-namespace InfoFlowAPI.Data.Migrations
+namespace InfoFlow.Data.Migrations
 {
     public partial class initial : Migration
     {

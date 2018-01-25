@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace InfoFlowAPI.Controllers
+namespace InfoFlow.API.Controllers
 {
     [Route("api/[controller]")]
     public class ValuesController : Controller
@@ -19,7 +19,7 @@ namespace InfoFlowAPI.Controllers
         [HttpGet("{id}")]
         public string Get(int id)
         {
-            return "value";
+            return User.IsInRole("Admin").ToString();
         }
 
         // POST api/values

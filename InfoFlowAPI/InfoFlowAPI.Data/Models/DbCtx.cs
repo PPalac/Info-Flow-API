@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace InfoFlowAPI.Data.Models
+namespace InfoFlow.Data.Models
 {
     public class DbCtx : IdentityDbContext
     {

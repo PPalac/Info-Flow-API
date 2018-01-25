@@ -1,4 +1,4 @@
-﻿namespace InfoFlowAPI.ViewModels
+﻿namespace InfoFlow.API.ViewModels
 {
     public class LoginViewModel
     {

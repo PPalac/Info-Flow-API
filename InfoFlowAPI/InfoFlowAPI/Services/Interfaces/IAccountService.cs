@@ -1,12 +1,15 @@
 ﻿using System.Threading.Tasks;
-using InfoFlowAPI.ViewModels;
+using InfoFlow.Core.Enums;
+using InfoFlow.API.ViewModels;
 
-namespace InfoFlowAPI.Services.Interfaces
+namespace InfoFlow.API.Services.Interfaces
 {
     public interface IAccountService
     {
         string BuildToken(UserViewModel user);
         Task<UserViewModel> AuthenticateAsync(LoginViewModel login);
         Task<bool> RegisterUserAsync(RegisterUserViewModel user);
+        Task<bool> CreateRole(Role role);
+        Task<bool> AddToRole(string userName, Role role);
     }
 }

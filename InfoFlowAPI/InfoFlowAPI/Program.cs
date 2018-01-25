@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Serilog;
 using Serilog.Events;
 
-namespace InfoFlowAPI
+namespace InfoFlow.API
 {
     public class Program
     {

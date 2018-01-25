@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using FluentAssertions;
-using InfoFlowAPI.Data.Models;
-using InfoFlowAPI.Services;
-using InfoFlowAPI.ViewModels;
+using InfoFlow.Data.Models;
+using InfoFlow.API.Services;
+using InfoFlow.API.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -39,7 +39,15 @@ namespace InfoFlowAPI.Tests.ServicesTests
                 new Mock<ILogger<UserManager<User>>>().Object
                 );
 
-            this.service = new AccountService(config.Object, userManager);
+            var roleManager = new RoleManager<IdentityRole>(
+                new Mock<IRoleStore<IdentityRole>>().Object,
+                new List<IRoleValidator<IdentityRole>>(),
+                new Mock<ILookupNormalizer>().Object,
+                new IdentityErrorDescriber(),
+                new Mock<ILogger<RoleManager<IdentityRole>>>().Object
+                );
+
+            this.service = new AccountService(config.Object, userManager, roleManager);
         }
         [Test]
         public void BuildToken_UserData_ShouldCreateJWT()

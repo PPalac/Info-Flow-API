@@ -3,24 +3,27 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using InfoFlowAPI.Data.Models;
-using InfoFlowAPI.Services.Interfaces;
-using InfoFlowAPI.ViewModels;
+using InfoFlow.Data.Models;
+using InfoFlow.Core.Enums;
+using InfoFlow.API.Services.Interfaces;
+using InfoFlow.API.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace InfoFlowAPI.Services
+namespace InfoFlow.API.Services
 {
     public class AccountService : IAccountService
     {
         private IConfiguration config;
         private UserManager<User> userManager;
+        private RoleManager<IdentityRole> roleManager;
 
-        public AccountService(IConfiguration config, UserManager<User> userManager)
+        public AccountService(IConfiguration config, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             this.config = config;
             this.userManager = userManager;
+            this.roleManager = roleManager;
         }
 
         public async Task<UserViewModel> AuthenticateAsync(LoginViewModel login)
@@ -55,6 +58,7 @@ namespace InfoFlowAPI.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+
         public async Task<bool> RegisterUserAsync(RegisterUserViewModel user)
         {
             var result = await userManager.CreateAsync(new User
@@ -72,5 +76,37 @@ namespace InfoFlowAPI.Services
 
             return false;
         }
+
+        public async Task<bool> CreateRole(Role roleName)
+        {
+            var role = new IdentityRole
+            {
+                Name = roleName.ToString()
+            };
+
+            var result = await roleManager.CreateAsync(role);
+
+            if (result.Succeeded)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> AddToRole(string userName, Role roleName)
+        {
+            var user = await userManager.FindByNameAsync(userName);
+
+            var result = await userManager.AddToRoleAsync(user, roleName.ToString());
+
+            if (result.Succeeded)
+            {
+                return true;
+            }
+
+            return false;
+        }
+      
     }
 }

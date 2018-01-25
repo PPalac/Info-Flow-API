@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using InfoFlowAPI.Data.Models;
-using InfoFlowAPI.Services;
-using InfoFlowAPI.Services.Interfaces;
+using InfoFlow.Data.Models;
+using InfoFlow.API.Services;
+using InfoFlow.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace InfoFlowAPI
+namespace InfoFlow.API
 {
     public class Startup
     {
@@ -73,7 +73,11 @@ namespace InfoFlowAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(
+            IApplicationBuilder app, 
+            IHostingEnvironment env, 
+            RoleManager<IdentityRole> roleManager, 
+            UserManager<User> userManager)
         {
             if (env.IsDevelopment())
             {

@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InfoFlowAPI\InfoFlowAPI.csproj" />
+    <ProjectReference Include="..\InfoFlowAPI\InfoFlow.API.csproj" />
   </ItemGroup>
 
 </Project>
