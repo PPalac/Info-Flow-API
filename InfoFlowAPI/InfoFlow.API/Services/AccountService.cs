@@ -72,19 +72,26 @@ namespace InfoFlow.API.Services
         }
 
 
-        public async Task<bool> RegisterUserAsync(RegisterUserViewModel user)
+        public async Task<bool> RegisterStudentAsync(RegisterUserViewModel user)
         {
-            var result = await userManager.CreateAsync(new User
+            var student = new User
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 UserName = user.Username,
                 Email = user.Email
-            }, user.Password);
+            };
+
+            var result = await userManager.CreateAsync(student, user.Password);
 
             if (result.Succeeded)
             {
-                return true;
+                var res = await userManager.AddToRoleAsync(student, Role.Student.ToString());
+
+                if (res.Succeeded)
+                {
+                    return true;
+                }
             }
 
             return false;

@@ -21,10 +21,10 @@ namespace InfoFlow.API.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        [Route("RegisterUser")]
+        [Route("RegisterStudent")]
         public async Task<IActionResult> RegisterUserAsync([FromBody]RegisterUserViewModel user)
         {
-            if (await accountService.RegisterUserAsync(user))
+            if (await accountService.RegisterStudentAsync(user))
             {
                 return Ok();
             }

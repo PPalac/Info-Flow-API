@@ -6,7 +6,7 @@
         OfficeWorker,
         Teacher,
         Student,
-        StudentYearAdmin,
-        StudentGroupAdmin
+        YearHead,
+        GroupHead
     }
 }

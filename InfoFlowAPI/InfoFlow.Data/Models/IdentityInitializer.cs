@@ -53,14 +53,14 @@ namespace InfoFlow.Data.Models
                 roleManager.CreateAsync(new IdentityRole { Name = Role.Student.ToString() }).Wait();
             }
 
-            if (!roleManager.RoleExistsAsync(Role.StudentGroupAdmin.ToString()).Result)
+            if (!roleManager.RoleExistsAsync(Role.GroupHead.ToString()).Result)
             {
-                roleManager.CreateAsync(new IdentityRole { Name = Role.StudentGroupAdmin.ToString() }).Wait();
+                roleManager.CreateAsync(new IdentityRole { Name = Role.GroupHead.ToString() }).Wait();
             }
 
-            if (!roleManager.RoleExistsAsync(Role.StudentYearAdmin.ToString()).Result)
+            if (!roleManager.RoleExistsAsync(Role.YearHead.ToString()).Result)
             {
-                roleManager.CreateAsync(new IdentityRole { Name = Role.StudentYearAdmin.ToString() }).Wait();
+                roleManager.CreateAsync(new IdentityRole { Name = Role.YearHead.ToString() }).Wait();
             }
         }
     }
