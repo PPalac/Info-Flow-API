@@ -1,6 +1,4 @@
-﻿
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
@@ -29,7 +27,7 @@ namespace InfoFlowAPI.Tests.ServicesTests
             config.Setup(conf => conf["Jwt:Key"]).Returns("qwertyuiopasdfgh");
             config.Setup(conf => conf["Jwt:Issuer"]).Returns("localhost:00000");
 
-            var userManager = new UserManager<User>(
+            var userManager = new UserManager<User>( //Todo: Create new class for mock configs (extension methods maybe?)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 new Mock<IUserStore<User>>().Object, 
                 new Mock<IOptions<IdentityOptions>>().Object,
                 new Mock<IPasswordHasher<User>>().Object,
