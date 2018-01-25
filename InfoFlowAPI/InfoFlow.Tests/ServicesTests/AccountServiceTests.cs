@@ -26,6 +26,7 @@ namespace InfoFlowAPI.Tests.ServicesTests
             var config = new Mock<IConfiguration>();
             config.Setup(conf => conf["Jwt:Key"]).Returns("qwertyuiopasdfgh");
             config.Setup(conf => conf["Jwt:Issuer"]).Returns("localhost:00000");
+            config.Setup(conf => conf["Jwt:ExpirationTime"]).Returns("10");
 
             var userManager = new UserManager<User>( //Todo: Create new class for mock configs (extension methods maybe?)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 new Mock<IUserStore<User>>().Object,
