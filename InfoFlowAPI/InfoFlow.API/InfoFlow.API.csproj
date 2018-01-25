@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\InfoFlow.Core\InfoFlow.Core.csproj" />
-    <ProjectReference Include="..\InfoFlowAPI.Data\InfoFlow.Data.csproj" />
+    <ProjectReference Include="..\InfoFlow.Data\InfoFlow.Data.csproj" />
   </ItemGroup>
 
 </Project>
