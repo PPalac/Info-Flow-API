@@ -9,7 +9,6 @@ namespace InfoFlow.API.Services.Interfaces
         string BuildToken(UserViewModel user);
         Task<UserViewModel> AuthenticateAsync(LoginViewModel login);
         Task<bool> RegisterUserAsync(RegisterUserViewModel user);
-        Task<bool> CreateRole(Role role);
         Task<bool> AddToRole(string userName, Role role);
     }
 }

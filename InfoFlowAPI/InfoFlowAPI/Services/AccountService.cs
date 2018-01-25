@@ -10,6 +10,8 @@ using InfoFlow.API.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace InfoFlow.API.Services
 {
@@ -35,7 +37,9 @@ namespace InfoFlow.API.Services
             {
                 if (await userManager.CheckPasswordAsync(user, login.Password))
                 {
-                    registeredUser = new UserViewModel { FirstName = user.FirstName, LastName = user.LastName, UserName = user.UserName };
+                    var roles = userManager.GetRolesAsync(user).Result;
+
+                    registeredUser = new UserViewModel { FirstName = user.FirstName, LastName = user.LastName, UserName = user.UserName, Roles = roles.ToList()};
                 }
             }
             return registeredUser;
@@ -45,15 +49,24 @@ namespace InfoFlow.API.Services
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var roleClaims = new List<Claim>();
 
-            var claims = new[] {
-                new Claim(ClaimTypes.Name, user.UserName)
+            foreach (var role in user.Roles)
+            {
+                roleClaims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            var claims = new List<Claim> {
+                new Claim(ClaimTypes.Name, user.UserName),
             };
+
+            claims.AddRange(roleClaims);
 
             var token = new JwtSecurityToken(config["Jwt:Issuer"],
               config["Jwt:Issuer"],
-              expires: DateTime.Now.AddMinutes(30),
-              signingCredentials: creds);
+              expires: DateTime.Now.AddMinutes(int.Parse(config["Jwt:ExpirationTime"])),
+              signingCredentials: creds,
+              claims: claims);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
@@ -68,23 +81,6 @@ namespace InfoFlow.API.Services
                 UserName = user.Username,
                 Email = user.Email
             }, user.Password);
-
-            if (result.Succeeded)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public async Task<bool> CreateRole(Role roleName)
-        {
-            var role = new IdentityRole
-            {
-                Name = roleName.ToString()
-            };
-
-            var result = await roleManager.CreateAsync(role);
 
             if (result.Succeeded)
             {

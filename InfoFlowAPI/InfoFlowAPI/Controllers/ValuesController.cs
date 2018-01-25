@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
+using InfoFlow.API.Helpers;
+using InfoFlow.Core.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InfoFlow.API.Controllers
@@ -15,7 +16,7 @@ namespace InfoFlow.API.Controllers
         }
 
         // GET api/values/5
-        [Authorize]
+        [Auth(Role.Admin,Role.OfficeWorker)]
         [HttpGet("{id}")]
         public string Get(int id)
         {

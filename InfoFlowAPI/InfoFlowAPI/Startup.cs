@@ -3,7 +3,6 @@ using InfoFlow.Data.Models;
 using InfoFlow.API.Services;
 using InfoFlow.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -12,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
+using System.Security.Claims;
 
 namespace InfoFlow.API
 {
@@ -74,9 +74,9 @@ namespace InfoFlow.API
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(
-            IApplicationBuilder app, 
-            IHostingEnvironment env, 
-            RoleManager<IdentityRole> roleManager, 
+            IApplicationBuilder app,
+            IHostingEnvironment env,
+            RoleManager<IdentityRole> roleManager,
             UserManager<User> userManager)
         {
             if (env.IsDevelopment())
@@ -84,8 +84,11 @@ namespace InfoFlow.API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseAuthentication()
-               .UseMvc()
+            app.UseAuthentication();
+
+            IdentityInitializer.SeedData(userManager, roleManager);
+
+            app.UseMvc()
                .UseSwagger()
                .UseSwaggerUI(opt => opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Info Flow API V1.0"));
         }

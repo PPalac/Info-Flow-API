@@ -5,6 +5,8 @@
         Admin,
         OfficeWorker,
         Teacher,
-        Student
+        Student,
+        StudentYearAdmin,
+        StudentGroupAdmin
     }
 }
