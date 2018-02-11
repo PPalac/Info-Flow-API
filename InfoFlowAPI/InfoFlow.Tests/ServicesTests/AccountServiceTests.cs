@@ -48,7 +48,7 @@ namespace InfoFlowAPI.Tests.ServicesTests
                 new Mock<ILogger<RoleManager<IdentityRole>>>().Object
                 );
 
-            this.service = new AccountService(config.Object, userManager, roleManager);
+            //this.service = new AccountService(config.Object, userManager, roleManager);
         }
         [Test]
         public void BuildToken_UserData_ShouldCreateJWT()

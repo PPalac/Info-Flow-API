@@ -1,17 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using InfoFlow.Data.Models;
-using InfoFlow.Core.Enums;
 using InfoFlow.API.Services.Interfaces;
 using InfoFlow.API.ViewModels;
+using InfoFlow.Core.Enums;
+using InfoFlow.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace InfoFlow.API.Services
 {
@@ -20,12 +20,14 @@ namespace InfoFlow.API.Services
         private IConfiguration config;
         private UserManager<User> userManager;
         private RoleManager<IdentityRole> roleManager;
+        private IEmailSenderService emailSender;
 
-        public AccountService(IConfiguration config, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public AccountService(IConfiguration config, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IEmailSenderService emailSender)
         {
             this.config = config;
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.emailSender = emailSender;
         }
 
         public async Task<UserViewModel> AuthenticateAsync(LoginViewModel login)
@@ -72,7 +74,7 @@ namespace InfoFlow.API.Services
         }
 
 
-        public async Task<bool> RegisterStudentAsync(RegisterUserViewModel user)
+        public async Task<string> RegisterStudentAsync(RegisterUserViewModel user)
         {
             var student = new User
             {
@@ -82,7 +84,7 @@ namespace InfoFlow.API.Services
                 Email = user.Email
             };
 
-            var result = await userManager.CreateAsync(student, user.Password);
+            var result = await userManager.CreateAsync(student);
 
             if (result.Succeeded)
             {
@@ -90,26 +92,22 @@ namespace InfoFlow.API.Services
 
                 if (res.Succeeded)
                 {
-                    return true;
+                    return res.Succeeded.ToString();
                 }
+
+                return res.Errors.FirstOrDefault().Description;
             }
 
-            return false;
+            return result.Errors.FirstOrDefault().Description;
         }
 
-        public async Task<bool> AddToRole(string userName, Role roleName)
+        public async Task<string> AddToRole(string userName, Role roleName)
         {
             var user = await userManager.FindByNameAsync(userName);
 
             var result = await userManager.AddToRoleAsync(user, roleName.ToString());
 
-            if (result.Succeeded)
-            {
-                return true;
-            }
-
-            return false;
+            return result.Succeeded ? result.Succeeded.ToString() : result.Errors.ToString();
         }
-      
     }
 }
