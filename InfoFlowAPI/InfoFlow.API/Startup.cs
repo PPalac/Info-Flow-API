@@ -45,6 +45,7 @@ namespace InfoFlow.API
                 opt.Password.RequireUppercase = true;
                 opt.Password.RequireLowercase = true;
                 opt.SignIn.RequireConfirmedEmail = true;
+                opt.User.RequireUniqueEmail = true;
                 opt.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
             })
             .AddDefaultTokenProviders();

@@ -37,19 +37,29 @@ namespace InfoFlow.API.Controllers
                 var student = await userManager.FindByNameAsync(user.Username);
                 var code = await userManager.GenerateEmailConfirmationTokenAsync(student);
                 var callbackUrl = Url.Action("Confirm", "Account", new { userId = student.Id, token = code }, HttpContext.Request.Scheme);
-                await emailSender.SendEmail(user.Email, "Confirm", callbackUrl);
+                await emailSender.SendEmail(user.Email, "Confirm", $"<a href='{callbackUrl}'>Confirm your email</a>");
                 return Ok();
             }
 
             return BadRequest(result);
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Confirm(string userId, string token)
         {
             var user = await userManager.FindByIdAsync(userId);
-            var result = await userManager.ConfirmEmailAsync(user, token);
+
+            if (user != null)
+            {
+                var result = await userManager.ConfirmEmailAsync(user, token);
+
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+            }
             
-            return Ok();
+            return BadRequest("Your link has expired or contains error. Please try again");
         }
 
         [AllowAnonymous]
