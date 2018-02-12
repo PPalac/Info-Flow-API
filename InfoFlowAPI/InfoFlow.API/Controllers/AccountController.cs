@@ -30,18 +30,25 @@ namespace InfoFlow.API.Controllers
         [Route("RegisterStudent")]
         public async Task<IActionResult> RegisterUserAsync([FromBody]RegisterUserViewModel user)
         {
-            var result = await accountService.RegisterStudentAsync(user);
+            var isParamValid = accountService.CheckRegisterToken(user.RegisterToken);
 
-            if (result == bool.TrueString)
+            if (isParamValid)
             {
-                var student = await userManager.FindByNameAsync(user.Username);
-                var code = await userManager.GenerateEmailConfirmationTokenAsync(student);
-                var callbackUrl = Url.Action("Confirm", "Account", new { userId = student.Id, token = code }, HttpContext.Request.Scheme);
-                await emailSender.SendEmail(user.Email, "Confirm", $"<a href='{callbackUrl}'>Confirm your email</a>");
-                return Ok();
+                var result = await accountService.RegisterStudentAsync(user);
+
+                if (result == bool.TrueString)
+                {
+                    var student = await userManager.FindByNameAsync(user.Username);
+                    var code = await userManager.GenerateEmailConfirmationTokenAsync(student);
+                    var callbackUrl = Url.Action("Confirm", "Account", new { userId = student.Id, token = code }, HttpContext.Request.Scheme);
+                    await emailSender.SendEmail(user.Email, "Confirm", $"<a href='{callbackUrl}'>Confirm your email</a>");
+                    return Ok();
+                }
+
+                return BadRequest(result);
             }
 
-            return BadRequest(result);
+            return BadRequest("Invalid Token");
         }
 
         [AllowAnonymous]
@@ -58,7 +65,7 @@ namespace InfoFlow.API.Controllers
                     return Ok();
                 }
             }
-            
+
             return BadRequest("Your link has expired or contains error. Please try again");
         }
 
@@ -77,6 +84,33 @@ namespace InfoFlow.API.Controllers
             }
 
             return response;
+        }
+
+        //[Auth(Role.Admin, Role.OfficeWorker)]
+        [HttpGet]
+        [Route("GenerateRegisterToken")]
+        public async Task<IActionResult> GenerateRegisterToken()
+        {
+            var parameter = await accountService.GenerateRegisterToken();
+
+            if (string.IsNullOrEmpty(parameter))
+            {
+                return BadRequest();
+            }
+
+            return Ok(parameter);
+        }
+
+        [HttpGet]
+        [Route("VerifyRegisterToken")]
+        public IActionResult VerifyRegisterToken(string param)
+        {
+            var isParamValid = accountService.CheckRegisterToken(param);
+
+            if (isParamValid)
+                return Ok();
+
+            return BadRequest("Invalid parameter");
         }
     }
 }

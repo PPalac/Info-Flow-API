@@ -10,6 +10,7 @@ using InfoFlow.API.ViewModels;
 using InfoFlow.Core.Enums;
 using InfoFlow.Data.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -21,13 +22,15 @@ namespace InfoFlow.API.Services
         private UserManager<User> userManager;
         private RoleManager<IdentityRole> roleManager;
         private IEmailSenderService emailSender;
+        private DbCtx ctx;
 
-        public AccountService(IConfiguration config, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IEmailSenderService emailSender)
+        public AccountService(IConfiguration config, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IEmailSenderService emailSender, DbCtx ctx)
         {
             this.config = config;
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.emailSender = emailSender;
+            this.ctx = ctx;
         }
 
         public async Task<UserViewModel> AuthenticateAsync(LoginViewModel login)
@@ -41,7 +44,7 @@ namespace InfoFlow.API.Services
                 {
                     var roles = userManager.GetRolesAsync(user).Result;
 
-                    registeredUser = new UserViewModel { FirstName = user.FirstName, LastName = user.LastName, UserName = user.UserName, Roles = roles.ToList()};
+                    registeredUser = new UserViewModel { FirstName = user.FirstName, LastName = user.LastName, UserName = user.UserName, Roles = roles.ToList() };
                 }
             }
             return registeredUser;
@@ -84,21 +87,31 @@ namespace InfoFlow.API.Services
                 Email = user.Email
             };
 
-            var result = await userManager.CreateAsync(student);
+            var param = ctx.RegisterLinkParams.Where(p => p.LinkParameter.ToString() == user.RegisterToken).SingleOrDefault();
 
-            if (result.Succeeded)
+            if (param != null)
             {
-                var res = await userManager.AddToRoleAsync(student, Role.Student.ToString());
+                var result = await userManager.CreateAsync(student);
 
-                if (res.Succeeded)
+                if (result.Succeeded)
                 {
-                    return res.Succeeded.ToString();
+                    var res = await userManager.AddToRoleAsync(student, Role.Student.ToString());
+
+                    if (res.Succeeded)
+                    {
+                        ctx.RegisterLinkParams.Remove(param);
+                        await ctx.SaveChangesAsync();
+
+                        return res.Succeeded.ToString();
+                    }
+
+                    return res.Errors.FirstOrDefault().Description;
                 }
 
-                return res.Errors.FirstOrDefault().Description;
+                return result.Errors.FirstOrDefault().Description;
             }
 
-            return result.Errors.FirstOrDefault().Description;
+            return "Invalid Token";
         }
 
         public async Task<string> AddToRole(string userName, Role roleName)
@@ -110,6 +123,29 @@ namespace InfoFlow.API.Services
             return result.Succeeded ? result.Succeeded.ToString() : result.Errors.ToString();
         }
 
+        public async Task<string> GenerateRegisterToken()
+        {
+            var param = Guid.NewGuid();
 
+            ctx.RegisterLinkParams.Add(new RegisterLinkParameter { LinkParameter = param });
+            var result = await ctx.SaveChangesAsync();
+
+            if (result > 0)
+                return param.ToString();
+
+            return string.Empty;
+        }
+
+        public bool CheckRegisterToken(string param)
+        {
+            var parameter = ctx.RegisterLinkParams.Where(p => p.LinkParameter.ToString() == param).SingleOrDefault();
+
+            if (parameter != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

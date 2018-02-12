@@ -35,7 +35,9 @@ namespace InfoFlow.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DbCtx>(opt => opt.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.AddDbContext<DbCtx>(opt =>
+            opt.UseSqlServer(Configuration.GetConnectionString("Default")),
+            ServiceLifetime.Transient);
 
             IdentityBuilder builder = services.AddIdentityCore<User>(opt =>
             {

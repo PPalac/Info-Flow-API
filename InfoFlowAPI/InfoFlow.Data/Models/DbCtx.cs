@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace InfoFlow.Data.Models
@@ -10,6 +9,7 @@ namespace InfoFlow.Data.Models
         {
         }
 
-        new DbSet<User> Users { get; set; }
+        public new DbSet<User> Users { get; set; }
+        public DbSet<RegisterLinkParameter> RegisterLinkParams { get; set; }
     }
 }

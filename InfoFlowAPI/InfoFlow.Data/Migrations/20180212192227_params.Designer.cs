@@ -12,9 +12,10 @@ using System;
 namespace InfoFlow.Data.Migrations
 {
     [DbContext(typeof(DbCtx))]
-    partial class DbCtxModelSnapshot : ModelSnapshot
+    [Migration("20180212192227_params")]
+    partial class @params
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,7 +29,11 @@ namespace InfoFlow.Data.Migrations
 
                     b.Property<Guid>("LinkParameter");
 
+                    b.Property<string>("StudentId");
+
                     b.HasKey("ID");
+
+                    b.HasIndex("StudentId");
 
                     b.ToTable("RegisterLinkParams");
                 });
@@ -210,6 +215,13 @@ namespace InfoFlow.Data.Migrations
                     b.ToTable("User");
 
                     b.HasDiscriminator().HasValue("User");
+                });
+
+            modelBuilder.Entity("InfoFlow.Data.Models.RegisterLinkParameter", b =>
+                {
+                    b.HasOne("InfoFlow.Data.Models.User", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
