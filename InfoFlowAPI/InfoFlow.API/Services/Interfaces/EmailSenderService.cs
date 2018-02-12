@@ -25,7 +25,7 @@ namespace InfoFlow.API.Services.Interfaces
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("148873@prz.edu.pl", "Politechnika Rzeszowska"),
+                From = new EmailAddress("office@polibuda.pl", "Politechnika XYZ"),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message
