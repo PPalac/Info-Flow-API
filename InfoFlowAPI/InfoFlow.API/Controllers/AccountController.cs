@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace InfoFlow.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("Api/Account")]
     public class AccountController : Controller
     {
         private IConfiguration config;
@@ -28,7 +28,7 @@ namespace InfoFlow.API.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("RegisterStudent")]
-        public async Task<IActionResult> RegisterUserAsync([FromBody]RegisterUserViewModel user)
+        public async Task<IActionResult> RegisterStudent([FromBody]RegisterUserViewModel user)
         {
             var isParamValid = accountService.CheckRegisterToken(user.RegisterToken);
 
@@ -72,7 +72,7 @@ namespace InfoFlow.API.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("GetToken")]
-        public async Task<IActionResult> CreateTokenAsync([FromBody]LoginViewModel login)
+        public async Task<IActionResult> CreateToken([FromBody]LoginViewModel login)
         {
             IActionResult response = Unauthorized();
             var user = await accountService.AuthenticateAsync(login);

@@ -10,7 +10,6 @@ using InfoFlow.API.ViewModels;
 using InfoFlow.Core.Enums;
 using InfoFlow.Data.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
