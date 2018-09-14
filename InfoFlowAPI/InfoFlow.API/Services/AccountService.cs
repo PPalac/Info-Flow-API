@@ -75,7 +75,6 @@ namespace InfoFlow.API.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-
         public async Task<string> RegisterStudentAsync(RegisterUserViewModel user)
         {
             var student = new User
@@ -127,6 +126,7 @@ namespace InfoFlow.API.Services
             var param = Guid.NewGuid();
 
             ctx.RegisterLinkParams.Add(new RegisterLinkParameter { LinkParameter = param });
+
             var result = await ctx.SaveChangesAsync();
 
             if (result > 0)

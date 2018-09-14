@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System.IO;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
 namespace InfoFlow.Data.Models
 {
@@ -11,5 +14,16 @@ namespace InfoFlow.Data.Models
 
         public new DbSet<User> Users { get; set; }
         public DbSet<RegisterLinkParameter> RegisterLinkParams { get; set; }
+    }
+
+    public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<DbCtx>
+    {
+        public DbCtx CreateDbContext(string[] args)
+        {
+            var builder = new DbContextOptionsBuilder<DbCtx>();
+            var connectionString = "Server=.;Database=Test;Integrated Security=SSPI;";
+            builder.UseSqlServer(connectionString);
+            return new DbCtx(builder.Options);
+        }
     }
 }

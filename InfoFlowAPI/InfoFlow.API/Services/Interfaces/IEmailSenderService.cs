@@ -6,6 +6,5 @@ namespace InfoFlow.API.Services.Interfaces
     {
         Task SendEmail(string email, string subject, string message);
         Task Execute(string apiKey, string subject, string message, string email);
-
     }
 }

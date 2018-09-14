@@ -19,7 +19,8 @@ namespace InfoFlow.Data.Models
                 {
                     FirstName = "SU",
                     LastName = "Adminowski",
-                    UserName = "admin"
+                    UserName = "admin",
+                    Email = "piotrekpalac1@gmail.com"
                 };
 
                 var result = userManager.CreateAsync(user, "Admin1").Result;

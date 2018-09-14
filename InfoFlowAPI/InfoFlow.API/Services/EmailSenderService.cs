@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
 using InfoFlow.API.Helpers;
+using InfoFlow.API.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
-namespace InfoFlow.API.Services.Interfaces
+namespace InfoFlow.API.Services
 {
     public class EmailSenderService : IEmailSenderService
     {
